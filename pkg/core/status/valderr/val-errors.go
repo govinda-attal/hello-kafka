@@ -1,8 +1,8 @@
 package valderr
 
 import (
-	"bitbucket.org/everledger/prov-pfm/pkg/core/status"
 	validation "github.com/go-ozzo/ozzo-validation"
+	"github.com/govinda-attal/hello-kafka/pkg/core/status"
 )
 
 func NewErrStatusWithValErrors(e status.ErrServiceStatus, valErrs validation.Errors) status.ErrServiceStatus {

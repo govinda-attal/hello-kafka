@@ -8,7 +8,7 @@ import (
 
 func main() {
 
-	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": "broker"})
+	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": "localhost"})
 	if err != nil {
 		panic(err)
 	}
@@ -32,10 +32,13 @@ func main() {
 	// Produce messages to topic (asynchronously)
 	topic := "myTopic"
 	for _, word := range []string{"Welcome", "to", "the", "Confluent", "Kafka", "Golang", "client"} {
-		p.Produce(&kafka.Message{
+		err := p.Produce(&kafka.Message{
 			TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 			Value:          []byte(word),
 		}, nil)
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 
 	// Wait for message deliveries before shutting down

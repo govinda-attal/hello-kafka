@@ -1,0 +1,14 @@
+debug*
+/vendor
+/dist
+**/vendor
+.idea/
+
+
+**/*secrect*y*ml
+**/*creds*y*ml
+**/*pass*y*ml
+
+**/*secrect*csv
+**/*creds*csv
+**/*pass*csv

@@ -1,0 +1,6 @@
+
+**/chaincode
+**/dockerenv
+**/*_test.go
+dist*
+vendor

@@ -4,11 +4,13 @@ import (
 	"fmt"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
+
+	at "github.com/govinda-attal/hello-kafka/pkg/asynctrans"
 )
 
 func main() {
 
-	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": "localhost"})
+	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": "broker"})
 	if err != nil {
 		panic(err)
 	}
@@ -31,10 +33,11 @@ func main() {
 
 	// Produce messages to topic (asynchronously)
 	topic := "myTopic"
-	for _, word := range []string{"Welcome", "to", "the", "Confluent", "Kafka", "Golang", "client"} {
+	for _, _ = range []string{"", ""} {
 		err := p.Produce(&kafka.Message{
 			TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
-			Value:          []byte(word),
+			Value:          []byte(`{"name":"govinda"}`),
+			Headers:        []kafka.Header{kafka.Header{Key: at.MsgHdrGrpName, Value: []byte("Greetings")}, kafka.Header{Key: at.MsgHdrMsgType, Value: []byte(at.MsgTypeRq)}, kafka.Header{Key: at.MsgHdrMsgName, Value: []byte("Hello")}, kafka.Header{Key: at.MsgHdrReplyTo, Value: []byte("replyTopic")}},
 		}, nil)
 		if err != nil {
 			fmt.Println(err)

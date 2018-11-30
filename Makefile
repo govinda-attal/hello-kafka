@@ -65,7 +65,7 @@ upload:
 	docker push gattal/$(APP_NAME):latest	
 
 run:
-	docker run --name $(APP_NAME) -p $(HOST_PORT):8080 --network=cp-all-in-one_default gattal/$(APP_NAME):$(TAG)
+	docker run --name $(APP_NAME) -p  $(HOST_PORT):8080 --rm -d --network=cp-all-in-one_default gattal/$(APP_NAME):$(TAG)
 
 ship: init test pack upload clean
 

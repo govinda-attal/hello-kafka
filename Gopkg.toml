@@ -26,10 +26,6 @@
 
 
 [[constraint]]
-  branch = "master"
-  name = "bitbucket.org/everledger/prov-pfm"
-
-[[constraint]]
   name = "github.com/confluentinc/confluent-kafka-go"
   version = "0.11.6"
 

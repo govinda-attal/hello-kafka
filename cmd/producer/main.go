@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 
+	"github.com/google/uuid"
+
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 
 	at "github.com/govinda-attal/hello-kafka/pkg/asynctrans"
@@ -35,6 +37,7 @@ func main() {
 	topic := "myTopic"
 	for _, _ = range []string{"", ""} {
 		err := p.Produce(&kafka.Message{
+			Key:            []byte(uuid.New().String()),
 			TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 			Value:          []byte(`{"name":"govinda"}`),
 			Headers:        []kafka.Header{kafka.Header{Key: at.MsgHdrGrpName, Value: []byte("Greetings")}, kafka.Header{Key: at.MsgHdrMsgType, Value: []byte(at.MsgTypeRq)}, kafka.Header{Key: at.MsgHdrMsgName, Value: []byte("Hello")}, kafka.Header{Key: at.MsgHdrReplyTo, Value: []byte("replyTopic")}},

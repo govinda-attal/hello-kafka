@@ -38,38 +38,72 @@ func (ks *router) NewRouteGrp(grpName string) *RouteGroup {
 func (ks *router) Listen(stop chan interface{}) error {
 
 	log.Println("Consumer is now in preparation!")
+
 	c, err := kafka.NewConsumer(ks.consumerCfg)
 
 	if err != nil {
 		panic(err)
 	}
 
-	//c.SubscribeTopics([]string{ks.rqTopic}, nil)
+	c.SubscribeTopics([]string{ks.rqTopic, "^aRegex.*[Tt]opic"}, nil)
 
-	err = c.SubscribeTopics([]string{ks.rqTopic}, nil)
-	if err != nil {
-		panic(err)
-	}
-	log.Println("Consumer is now listening!")
-loop:
-	for {
+	// OPTION - 1 // WORKS
+	// for {
+	// 	msg, err := c.ReadMessage(-1)
+	// 	if err == nil {
+	// 		ks.callHandler(msg)
+	// 	} else {
+	// 		fmt.Printf("Consumer error: %v (%v)\n", err, msg)
+	// 	}
+	// }
+
+	// OPTION - 2 // NOT WORKS
+	// for {
+	// 	select {
+
+	// 	case <-stop:
+	// 		break
+	// 	case ev := <-c.Events():
+	// 		switch e := ev.(type) {
+	// 		case *kafka.Message:
+	// 			log.Println("Message received: ", e.Key, "\n", e.Value)
+	// 			ks.callHandler(e)
+	// 		default:
+	// 			log.Println("Unknown event ", ev)
+	// 		}
+	// 	}
+	// }
+
+	// OPTION 3 - WORKS
+
+	run := true
+
+	for run == true {
 		select {
+		case <-stop:
+			fmt.Println("Caught signal - terminating!")
+			run = false
+		default:
+			ev := c.Poll(100)
+			if ev == nil {
+				continue
+			}
 
-		case <-stop:govin
-			break loop
-		case ev := <-c.Events():
 			switch e := ev.(type) {
 			case *kafka.Message:
-				log.Println("Message received: ", e.Key, "\n", e.Value)
 				ks.callHandler(e)
+			case kafka.Error:
+				fmt.Println("Error: ", e)
+				run = false
 			default:
-				log.Println("Unknown event ", ev)
+				fmt.Println("Ignored: ", e)
 			}
 		}
 	}
 
+	fmt.Println("Closing consumer!")
 	c.Close()
-	log.Println("Consumer is now closed!")
+
 	return nil
 }
 

@@ -50,12 +50,9 @@ func main() {
 
 	pCfg := &kafka.ConfigMap{"bootstrap.servers": "broker"}
 	cCfg := &kafka.ConfigMap{
-		"bootstrap.servers":               "broker",
-		"group.id":                        "myGroup",
-		"session.timeout.ms":              6000,
-		"go.events.channel.enable":        true,
-		"go.application.rebalance.enable": true,
-		"default.topic.config":            kafka.ConfigMap{"auto.offset.reset": "earliest"},
+		"bootstrap.servers": "broker",
+		"group.id":          "myGroup",
+		"auto.offset.reset": "earliest",
 	}
 
 	greeter := &Greeter{}

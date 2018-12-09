@@ -10,6 +10,7 @@ const (
 	MsgHdrMsgType MsgHdr = "MsgType"
 	MsgHdrMsgName MsgHdr = "MsgName"
 	MsgHdrGrpName MsgHdr = "GrpName"
+	MsgHdrMsgEnc  MsgHdr = "MsgEnc"
 	MsgHdrReplyTo MsgHdr = "ReplyTo"
 
 	MsgHdrValUnk MsgHdr = "UNK"
@@ -22,6 +23,7 @@ const (
 )
 
 type MsgType = string
+type MsgEnc = string
 
 const (
 	MsgTypeEvent MsgType = "EVENT"
@@ -32,6 +34,9 @@ const (
 	MsgTypeErrEvent MsgType = "ERR_EVENT"
 
 	MsgTypeUnk MsgType = "UNK"
+
+	MsgEncJSON  MsgEnc = "JSON"
+	MsgEncPROTO MsgEnc = "PROTO"
 )
 
 type Handler interface {

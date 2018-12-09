@@ -11,7 +11,6 @@ RUN mkdir dist && \
 
 RUN dep ensure -v
 
-RUN sleep 5
 
 RUN	GOOS=linux GOARCH=amd64 go build -ldflags "-X 'main.version=1.1.0'" -o ./dist/producer/producer ./cmd/producer/...
 
